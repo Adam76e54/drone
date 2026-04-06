@@ -1,2 +1,4 @@
 betaflight/
 copies/
+ardupilot/
+.gitignore
