@@ -1,6 +1,3 @@
-[package]
-name = "drone_firmware"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
+[workspace]
+members = ["flight", "maths", "control"]
+resolver = "2"

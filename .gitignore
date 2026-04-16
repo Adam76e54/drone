@@ -6,4 +6,4 @@ ardupilot/
 
 .vscode/
 
-drone_rust_firmware/target/
+drone_firmware/target
