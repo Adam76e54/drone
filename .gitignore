@@ -1,5 +1,8 @@
 betaflight/
+
 copies/
+
 ardupilot/
-.gitignore
+
+.gitignore/
 .vscode/
