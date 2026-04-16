@@ -1,3 +1,22 @@
 [workspace]
 members = ["flight", "maths", "control"]
 resolver = "2"
+
+
+
+[profile.release]
+opt-level = 1 # This is like C++ -O1 optimisation flag 
+lto = "thin" # link-time optimisation, allows optimisation across crates rather than "optimise everything separately, then link"
+codegen-units = 1 # don't let the compiler split crates into chunks, force it to optimise everything together
+panic = "abort" # runtime errors just stop the programme instead of unwinding the stack 
+
+
+# Override for a specific crate
+[profile.release.package.maths]
+opt-level = 3
+
+[profile.release.package.control]
+opt-level = 2
+
+[profile.release.package.flight]
+opt-level = "z"
