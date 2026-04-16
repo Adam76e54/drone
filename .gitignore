@@ -1,0 +1,9 @@
+betaflight/
+
+copies/
+
+ardupilot/
+
+.vscode/
+
+drone_rust_firmware/target/
