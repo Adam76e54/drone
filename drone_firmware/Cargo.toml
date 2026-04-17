@@ -1,3 +1,5 @@
+#For referencing later: https://doc.rust-lang.org/cargo/reference/profiles.html
+
 [workspace]
 members = ["flight", "maths", "control"]
 resolver = "2"
