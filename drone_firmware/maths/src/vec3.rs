@@ -1,4 +1,5 @@
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign, Rem};
+use core::convert::From;
 
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
 
@@ -43,6 +44,9 @@ impl Vec3 {
         }
     }
 
+    pub fn to_array(self) -> [f32; 3] {
+        [self.x, self.y, self.z]
+    }
     
 }   
 
@@ -127,3 +131,14 @@ impl DivAssign<f32> for Vec3 {
     }
 }
 
+impl From<[f32; 3]> for Vec3 {
+    fn from(arr: [f32; 3]) -> Self {
+        Self::new(arr[0], arr[1], arr[2])
+    }
+}
+
+impl From<Vec3> for [f32; 3] {
+    fn from(vec: Vec3) -> Self {
+        [vec.x, vec.y, vec.z]
+    }
+}
