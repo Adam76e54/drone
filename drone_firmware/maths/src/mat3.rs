@@ -37,6 +37,14 @@ impl Mat3 {
             ],
         }
     }
+
+    pub fn row(&self, index: usize) -> Vec3 {
+        Vec3::new(self.m[0][index], self.m[1][index], self.m[2][index])
+    }
+
+    pub fn col(&self, index: usize) -> Vec3 {
+        Vec3::from(self.m[index])
+    }
  
 }
 
@@ -72,15 +80,10 @@ impl Mul for Mat3 {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
-        let mut result = Self::IDENTITY;
-        for i in 0..3 {
-            for j in 0..3 {
-                result.m[i][j] = self.m[i][0] * rhs.m[0][j]
-                    + self.m[i][1] * rhs.m[1][j]
-                    + self.m[i][2] * rhs.m[2][j];
-            }
-        }
-        result
+        let c0 = self * Vec3::from(rhs.m[0]);
+        let c1 = self * Vec3::from(rhs.m[1]);
+        let c2 = self * Vec3::from(rhs.m[2]);
+        Self::from_cols(c0, c1, c2)
     }
 }
 
@@ -88,10 +91,8 @@ impl Mul<Vec3> for Mat3 {
     type Output = Vec3;
 
     fn mul(self, rhs: Vec3) -> Self::Output {
-        Vec3::new(
-            self.m[0][0] * rhs.x + self.m[0][1] * rhs.y + self.m[0][2] * rhs.z,
-            self.m[1][0] * rhs.x + self.m[1][1] * rhs.y + self.m[1][2] * rhs.z,
-            self.m[2][0] * rhs.x + self.m[2][1] * rhs.y + self.m[2][2] * rhs.z,
-        )
+        let x = self.row(0) * rhs;
+        let y = self.row(1) * rhs;
+        let z = self.row(2) * rhs;
     }
 }
