@@ -94,5 +94,7 @@ impl Mul<Vec3> for Mat3 {
         let x = self.row(0) * rhs;
         let y = self.row(1) * rhs;
         let z = self.row(2) * rhs;
+
+        Vec3::new(x,y,z)
     }
 }
