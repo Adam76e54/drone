@@ -1,0 +1,35 @@
+.configurator-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #d4d4d4;
+    padding: 12px;
+    gap: 8px;
+}
+
+.tab { 
+    text-align: left;
+    padding: 10px 12px;
+    background: transparent;
+    border: none;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+}
+
+.tab:hover {
+    background: #f5f5f5;
+}
+
+.tab.active {
+    background: #f5f5f5;
+    border-left: 3px solid #007acc;
+}
+
+.content {
+    padding: 16px;
+}
