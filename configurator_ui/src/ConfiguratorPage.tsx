@@ -13,13 +13,14 @@ export function ConfiguratorPage() {
     const [activeTab, setActiveTab] = useState<TabId>("Setup");
 
     return (
-        <div className="configurator-layout">
-            <main> 
-                <h1>Configurator</h1>
+        <div>
+
+            <main className="configurator-layout">
+                <h1 className="header">Configurator</h1>
 
                 <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
 
-                <section style={{ marginTop: "1rem" }}>
+                <section className="content-area" style={{ marginLeft: "1rem" }}>
                     {activeTab === "Setup" && <SetupTab />}
                     {activeTab === "PID" && <PidTab />}
                     {activeTab === "Receiver" && <ReceiverTab />}
@@ -28,5 +29,6 @@ export function ConfiguratorPage() {
                 </section>
             </main>
         </div>
+
     );
 }
