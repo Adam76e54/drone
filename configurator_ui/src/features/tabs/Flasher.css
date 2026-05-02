@@ -1,0 +1,14 @@
+.flasher-button {
+    background-color: #ffcccc;
+    color: #cc0000;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 0.4rem;
+    width: 120px;
+    height: 60px;
+    cursor: crosshair;
+}
+
+.flasher-button:hover{
+    background: #ffb3b3;
+}

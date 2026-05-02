@@ -1,7 +1,8 @@
+import "./Flasher.css";
 export function FlasherTab() {
     return (
-        <div>
-            Flasher
-        </div>
+        <button className="flasher-button" onClick={() => alert("Flashing firmware...")}>
+            Flash Firmware
+        </button>
     )
 }
