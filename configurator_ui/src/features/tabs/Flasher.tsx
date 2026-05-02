@@ -1,8 +1,9 @@
 import "./Flasher.css";
+import Button from "@mui/material/Button";
 export function FlasherTab() {
     return (
-        <button className="flasher-button" onClick={() => alert("Flashing firmware...")}>
+        <Button variant="contained" onClick={() => alert("Flashing firmware...")}>
             Flash Firmware
-        </button>
+        </Button>
     )
 }
