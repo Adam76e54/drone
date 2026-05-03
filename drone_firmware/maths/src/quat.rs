@@ -1,6 +1,7 @@
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 use crate::vec3::Vec3;
+use crate::mat3::Mat3;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Quat {
@@ -21,5 +22,9 @@ impl Quat {
 
     pub fn normalize(self) -> Self {
         todo!()
+    }
+
+    pub fn to_matrix(self) -> Mat3 {
+        todo!() 
     }
 }
