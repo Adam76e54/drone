@@ -1,30 +1,25 @@
-// use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
-// #[derive(Debug, Clone, Copy, PartialEq)]
-// pub struct Quat {
-//     pub w: f32,
-//     pub x: f32,
-//     pub y: f32,
-//     pub z: f32,
-// }
+use crate::vec3::Vec3;
 
-// impl Quat {
-//     pub const IDENTITY: Self = Self::new(1.0, 0.0, 0.0, 0.0);
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Quat {
+    pub s: f32,
+    pub v: Vec3
+}
 
-//     pub const fn new(w: f32, x: f32, y: f32, z: f32) -> Self {
-//         Self { w, x, y, z }
-//     }
+impl Quat {
+    pub const IDENTITY: Self = Self::new(1.0, Vec3::ZERO);
 
-//     pub fn norm(self) -> f32 {
-//         libm::sqrtf(self.w * self.w + self.x * self.x + self.y * self.y + self.z * self.z)
-//     }
+    pub const fn new(s: f32, v: Vec3) -> Self {
+        Self { s, v }
+    }
 
-//     pub fn normalize(self) -> Self {
-//         let n = self.norm();
-//         if n > 0.0 {
-//             self / n
-//         } else {
-//             Self::IDENTITY
-//         }
-//     }
-// }
+    pub fn norm(self) -> f32 {
+        libm::sqrtf(self.s * self.s + self.v.dot(self.v))
+    }
+
+    pub fn normalize(self) -> Self {
+        todo!()
+    }
+}
