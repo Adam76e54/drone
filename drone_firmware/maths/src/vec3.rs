@@ -1,5 +1,7 @@
-use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign, Rem};
+use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use core::convert::From;
+
+use crate::quat::Quat;
 
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
 
@@ -47,17 +49,18 @@ impl Vec3 {
     pub fn to_array(self) -> [f32; 3] {
         [self.x, self.y, self.z]
     }
-    
-}   
 
-// The cross product: a % b = a x b. This is mimicking ardupilot.
-impl Rem for Vec3 {
-    type Output = Self;
+    pub fn rotate(self, q: Quat) -> Self {
+        // v' = q * v * q^-1 if q is a unit quaternion
 
-    fn rem(self, rhs: Self) -> Self::Output {
-        self.cross(rhs)
+        // It might be wasteful to normalise every call but should be fine ? 
+        let q = q.normalized().unwrap_or(Quat::IDENTITY); 
+        let q_conj = q.conjugate();
+        let v_quat = Quat::from(self);
+        let rotated_v_quat = q * v_quat * q_conj;
+        rotated_v_quat.v
     }
-}
+}   
 
 impl Div<f32> for Vec3 {
     type Output = Self;
@@ -150,3 +153,6 @@ impl From<Vec3> for [f32; 3] {
         [vec.x, vec.y, vec.z]
     }
 }
+
+
+
