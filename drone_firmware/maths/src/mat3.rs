@@ -56,7 +56,7 @@ impl Mat3 {
     pub fn col(&self, index: usize) -> Vec3 {
         Vec3::from(self.m[index])
     }
- 
+
 }
 
 impl Add for Mat3 {
@@ -84,6 +84,14 @@ impl Add<f32> for Mat3 {
             }
         }
         result
+    }
+}
+
+impl Add<Mat3> for f32 {
+    type Output = Mat3;
+
+    fn add(self, rhs: Mat3) -> Self::Output {
+        rhs + self // reuse the Mat3 + f32 implementation
     }
 }
 
