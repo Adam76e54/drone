@@ -73,6 +73,40 @@ impl Add for Mat3 {
     }
 }
 
+impl Add<f32> for Mat3 {
+    type Output = Self;
+
+    fn add(self, rhs: f32) -> Self::Output {
+        let mut result = Self::ZERO;
+        for i in 0..3 {
+            for j in 0..3 {
+                result.m[i][j] = self.m[i][j] + rhs;
+            }
+        }
+        result
+    }
+}
+
+impl AddAssign for Mat3 {
+    fn add_assign(&mut self, rhs: Self) {
+        for i in 0..3 {
+            for j in 0..3 {
+                self.m[i][j] += rhs.m[i][j];
+            }
+        }
+    }
+}
+
+impl AddAssign<f32> for Mat3 {
+    fn add_assign(&mut self, rhs: f32) {
+        for i in 0..3 {
+            for j in 0..3 {
+                self.m[i][j] += rhs;
+            }
+        }
+    }
+}
+
 impl Sub for Mat3 {
     type Output = Self;
 
@@ -84,6 +118,78 @@ impl Sub for Mat3 {
             }
         }
         result
+    }
+}
+
+impl Sub<f32> for Mat3 {
+    type Output = Self;
+
+    fn sub(self, rhs: f32) -> Self::Output {
+        let mut result = Self::ZERO;
+        for i in 0..3 {
+            for j in 0..3 {
+                result.m[i][j] = self.m[i][j] - rhs;
+            }
+        }
+        result
+    }
+}
+
+impl Neg for Mat3 {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        let mut result = Self::ZERO;
+        for i in 0..3 {
+            for j in 0..3 {
+                result.m[i][j] = -self.m[i][j];
+            }
+        }
+        result
+    }
+}
+
+impl SubAssign for Mat3 {
+    fn sub_assign(&mut self, rhs: Self) {
+        for i in 0..3 {
+            for j in 0..3 {
+                self.m[i][j] -= rhs.m[i][j];
+            }
+        }
+    }
+}
+
+impl SubAssign<f32> for Mat3 {
+    fn sub_assign(&mut self, rhs: f32) {
+        for i in 0..3 {
+            for j in 0..3 {
+                self.m[i][j] -= rhs;
+            }
+        }
+    }
+}
+
+impl Div<f32> for Mat3 {
+    type Output = Self;
+
+    fn div(self, rhs: f32) -> Self::Output {
+        let mut result = Self::ZERO;
+        for i in 0..3 {
+            for j in 0..3 {
+                result.m[i][j] = self.m[i][j] / rhs;
+            }
+        }
+        result
+    }
+}
+
+impl DivAssign<f32> for Mat3 {
+    fn div_assign(&mut self, rhs: f32) {
+        for i in 0..3 {
+            for j in 0..3 {
+                self.m[i][j] /= rhs;
+            }
+        }
     }
 }
 
@@ -107,5 +213,29 @@ impl Mul<Vec3> for Mat3 {
         let z = self.row(2).dot(rhs);
 
         Vec3::new(x,y,z)
+    }
+}
+
+impl Mul<f32> for Mat3 {
+    type Output = Self;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        let mut result = Self::ZERO;
+        for i in 0..3 {
+            for j in 0..3 {
+                result.m[i][j] = self.m[i][j] * rhs;
+            }
+        }
+        result
+    }
+}
+
+impl MulAssign<f32> for Mat3 {
+    fn mul_assign(&mut self, rhs: f32) {
+        for i in 0..3 {
+            for j in 0..3 {
+                self.m[i][j] *= rhs;
+            }
+        }
     }
 }
