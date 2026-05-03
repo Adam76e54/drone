@@ -30,6 +30,7 @@ impl Mat3 {
 
     // NOTE: these "impl Into<Vec3>" parameter types are saying "a type that has this trait implemented" 
     // so we can pass both Vec3 and [f32; 3] to this function. 
+    // It might actually be better to just use [f32; 3] but I'm using it for the education.
     pub fn from_cols(
         col0: impl Into<Vec3>,
         col1: impl Into<Vec3>,
