@@ -16,6 +16,15 @@ impl Quat {
         Self { s, v }
     }
 
+    pub fn from_angle_axis(angle_rad: f32, axis: Vec3) -> Self {
+        let half_angle = angle_rad * 0.5;
+        let (sin_half, cos_half) = libm::sincosf(half_angle);
+        Self {
+            s: cos_half,
+            v: axis * sin_half,
+        }
+    }
+
     pub fn norm(self) -> f32 {
         libm::sqrtf(self.norm_squared())
     }
