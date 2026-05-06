@@ -3,7 +3,7 @@ import { PidTab } from "./PidTab";
 import { ReceiverTab } from "./ReceiverTab";
 import { PortsTab } from "./PortsTab";
 import { MotorsTab } from "./MotorsTab";
-import { FlasherTab } from "./Flasher";
+import { FlasherTab } from "../flasher/FlasherTab";
 
 export const tabs = [
     {id: "Setup", label: "Setup", component: SetupTab},
