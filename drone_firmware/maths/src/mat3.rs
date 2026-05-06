@@ -1,5 +1,6 @@
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use crate::vec3::Vec3;
+use crate::quat::Quat;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Mat3 {
@@ -245,5 +246,24 @@ impl MulAssign<f32> for Mat3 {
                 self.m[i][j] *= rhs;
             }
         }
+    }
+}
+
+impl From<Quat> for Mat3 {
+    fn from(quat: Quat) -> Self {
+        let q0 = quat.s;
+        let q1 = quat.v.x;
+        let q2 = quat.v.y;
+        let q3 = quat.v.z;
+
+        // This is pulled from the derivation in "Visualizing Quaternions" by Andrew J. Hanson
+        Self {
+            m: [
+                [1.0 - 2.0 * (q2 * q2 + q3 * q3), 2.0 * (q1 * q2 - q0 * q3), 2.0 * (q1 * q3 + q0 * q2)],
+                [2.0 * (q1 * q2 + q0 * q3), 1.0 - 2.0 * (q1 * q1 + q3 * q3), 2.0 * (q2 * q3 - q0 * q1)],
+                [2.0 * (q1 * q3 - q0 * q2), 2.0 * (q2 * q3 + q0 * q1), 1.0 - 2.0 * (q1 * q1 + q2 * q2)],
+            ],
+        }
+
     }
 }
