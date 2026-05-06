@@ -12,11 +12,18 @@ pub struct Quat {
 impl Quat {
     pub const IDENTITY: Self = Self::new(1.0, Vec3::ZERO);
 
-    pub const fn new(s: f32, v: Vec3) -> Self {
+    // I don't think we're so memory constrained that [f32; 3] is meaningfully smaller than Vec3.
+    // I'll keep new() private just so call sites are explicit
+    const fn new(s: f32, v: Vec3) -> Self {
         Self { s, v }
     }
 
-    pub fn from_angle_axis(angle_rad: f32, axis: Vec3) -> Self {
+    pub const fn from_components(s: f32, v: Vec3) -> Self {
+        Self { s, v }
+    }
+
+    // NOTE: this can't be const fn because libm::sincosf isn't const (const = constexpr in C++)
+    pub fn from_angle(angle_rad: f32, axis: Vec3) -> Self {
         let half_angle = angle_rad * 0.5;
         let (sin_half, cos_half) = libm::sincosf(half_angle);
         Self {
