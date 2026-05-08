@@ -93,6 +93,7 @@ impl Sub for Quat {
     }
 }
 
+#[allow(clippy::suspicious_arithmetic_impl)] //silencing Clippy's suspicious about div() not containing a '/' operation
 impl Div for Quat {
     type Output = Self;
 
