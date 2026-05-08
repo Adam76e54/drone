@@ -246,6 +246,8 @@ impl MulAssign<f32> for Mat3 {
                 self.m[i][j] *= rhs;
             }
         }
+
+        
     }
 }
 
