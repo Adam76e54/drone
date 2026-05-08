@@ -1,8 +1,22 @@
 #I'm new to rust so for referencing later: https://doc.rust-lang.org/cargo/reference/profiles.html
 
+# [Table]
+# key = {inline table}
+
+# A table is just a named section that Cargo knows what to do with. Everything underneath is a key which may 
+# be specified further with fields {which go in an inline table if there are multiple for one key}
+# Tables can have nested tables eg. [dependencies.embassy-time] is a table nested in [dependencies] 
+
 [workspace]
-members = ["flight", "maths", "control"]
+members = [
+    "flight", 
+    "maths", 
+    "control"]
+
 resolver = "2"
+
+[workspace.dependencies]
+libm = "0.2"
 
 [profile.release]
 opt-level = 1 # This is like C++ -O1 optimisation flag 
