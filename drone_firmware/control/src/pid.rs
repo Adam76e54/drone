@@ -1,67 +1,79 @@
-use maths::consts::{TAU};
+use crate::filtering::lowpass_alpha;
 
 #[derive(Clone, Copy)]
 
-pub struct PidCoefficients {
+pub struct PIDF {
     pub kp: f32,
     pub ki: f32,
     pub kd: f32,
     pub kff: f32, // Feed-forward gain
 }
 
-pub struct PidLimiters {
-    pub integral_limit: f32,
-    pub error_filter_frequency_hz: f32,
-    pub derviative_filter_frequency_hz: f32,
-}
-pub struct PidController {
-    coefficients: PidCoefficients,
-    limiters: PidLimiters,
+pub struct Controller {
+    coefficients: PIDF,
+    integral_limit: f32,
+    filter_hz: f32, // for filtering the derivative term
     
     integral: f32,
-    previous_error: f32,
-
-    filtered_error: f32,
-    filtered_derivative: f32,
+    previous_error: Option<f32>,
+    filtered_derivative: Option<f32>,
 }
 
-impl PidController {
-    pub const fn new(coefficients: PidCoefficients, limiters: PidLimiters) -> Self {
+impl Controller {
+    pub const fn new(coefficients: PIDF, integral_limit: f32, filter_hz: f32) -> Self {
         Self {
             coefficients, 
-            limiters,
+            integral_limit,
+            filter_hz,
             integral: 0.0,
-            previous_error: 0.0,
-            filtered_error: 0.0,
-            filtered_derivative: 0.0,
+            previous_error: None,
+            filtered_derivative: None,
         }
     }
 
     // Returns the adjustment. Note that we'll keep dt external because we'll have a few of these controllers 
     // Going at the same time so we don't want them all internally reading Instant::now() 
     pub fn update(&mut self, setpoint: f32, measurement: f32, dt_s: f32) -> f32 {
+        if dt_s <= 0.0 { return 0.0; }
+
         let error = setpoint - measurement;
-        let integral_limit = self.limiters.integral_limit;
 
-        let p = error * self.coefficients.kp; 
-
+        // Compute integral
         self.integral = self.integral + error * dt_s;
-        if integral_limit > 0.0 {
-            self.integral = self.integral.clamp(-integral_limit, integral_limit);
+        if self.integral_limit > 0.0 {
+            self.integral = self.integral.clamp(-self.integral_limit, self.integral_limit);
         }
 
-        let d = (error / dt_s) * self.coefficients.kd;
+        // Compute filtered deriviative
+        let raw_derivative = match self.previous_error {
+            Some(prev) => (error - prev) / dt_s,
+            None => 0.0,
+        };
+        self.previous_error = Some(error);
+
+        let derivative = match self.filtered_derivative {
+            None => {
+                self.filtered_derivative = Some(raw_derivative);
+                raw_derivative
+            }
+
+            Some(prev_filtered) => {
+                let alpha = lowpass_alpha(self.filter_hz, dt_s);
+                let filtered = prev_filtered + alpha * (raw_derivative - prev_filtered);
+                self.filtered_derivative = Some(filtered);
+                filtered
+            }
+        };
+
+
+        // Compute adjustments
+        let p = error * self.coefficients.kp; 
+        let i = self.integral * self.coefficients.ki;
+        let d = derivative * self.coefficients.kd;
         let f = setpoint * self.coefficients.kff;
 
-        p + self.integral + d + f
+        p + i + d + f
     }
 
-    fn lowpas_alpha(&self, cutoff_hz: f32, dt_s: f32) -> f32 {
-        if cutoff_hz <= 0.0 {
-            return 1.0;
-        }
 
-        let rc = 1.0 / (TAU * cutoff_hz);
-        dt_s / (dt_s + rc)
-    }
 }
