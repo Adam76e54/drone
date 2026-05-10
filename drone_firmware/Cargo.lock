@@ -5,6 +5,9 @@ version = 4
 [[package]]
 name = "control"
 version = "0.1.0"
+dependencies = [
+ "maths",
+]
 
 [[package]]
 name = "flight"
