@@ -1,50 +1,29 @@
 import { useState } from "react";
-import reactLogo from "../assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
+import  Box  from "@mui/material/Box"
+import { Typography } from "@mui/material";
 import "./App.css";
+import TabBar, { type ConfigTab } from "../tab-bar/TabBar.tsx"
+import SetupPage from "../setup/Setup.tsx";
+import FlasherPage from "../flasher/Flasher.tsx";
+
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const [tab, setTab] = useState<ConfigTab>('setup');
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+      <TabBar tab={tab} onTabChange={setTab}/>
 
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+      <Box component="main" sx={{ p: 2 }}>
+        {tab === 'setup' && <SetupPage />}
+        {tab === 'receiver' && <Typography color="text.primary">Receiver page</Typography>}
+        {tab === 'motors' && <Typography color="text.primary">Motors page</Typography>}
+        {tab === 'pid' && <Typography color="text.primary">PID page</Typography>}
+        {tab === 'rates' && <Typography color="text.primary">Rates page</Typography>}
+        {tab === 'blackbox' && <Typography color="text.primary">Blackbox page</Typography>}
+        {tab === 'flashing' && <FlasherPage />}
+      </Box>
+    </Box>
   );
 }
 

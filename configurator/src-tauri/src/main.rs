@@ -3,4 +3,4 @@
 
 fn main() {
     configurator_lib::run()
-}
+}       

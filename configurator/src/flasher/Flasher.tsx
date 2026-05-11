@@ -1,13 +1,27 @@
-import type { Tab } from '../tab-bar/types.ts'
+import { invoke } from "@tauri-apps/api/core";
+import { Box, Button, Card } from "@mui/material";
 
-function FlasherPage() {
+export default function FlasherPage() {
+    const handleFlash = async () => {
+        try {
+            const result = await invoke<string>('flash_firmware', {
+                port: 'COMx',
+                path: 'path',
+            });
+
+            console.log('Flash result:', result);
+        } catch (error){
+            console.error('Flash failed', error);
+        }
+    };
+
     return (
-        <div>Flasher</div>
+        <Box>
+            <Card>
+                <Button onClick={handleFlash}>
+                    Flash
+                </Button>
+            </Card>
+        </Box>
     );
-}
-
-export const Flasher: Tab = {
-    id: "flash",
-    label: "Flash", 
-    component: FlasherPage,
 }
