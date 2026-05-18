@@ -11,22 +11,38 @@
 members = [
     "flight", 
     "maths", 
-    "control"]
+    "control",
+    "hardware"]
 
 resolver = "2"
 
 [workspace.dependencies]
 libm = "0.2"
-defmt = "1"
-defmt-rtt = "1"
-panic-probe = { version = "1", features = ["print-defmt"] }
+
+panic-halt = "0.2"
+
 cortex-m = { version = "0.7", features = ["inline-asm", "critical-section-single-core"] }
 cortex-m-rt = "0.7"
 
-embassy-executor = { version = "0.7", features = ["arch-cortex-m", "executor-thread", "defmt"] }
-embassy-time = { version = "0.4", features = ["defmt", "defmt-timestamp-uptime", "tick-hz-32_768"] }
-embassy-sync = { version = "0.7", features = ["defmt"] }
-embassy-stm32 = { version = "0.2", features = ["defmt", "unstable-pac", "memory-x", "exti", "time-driver-any"] }
+embassy-executor = { version = "0.7", features = [
+    "arch-cortex-m",
+    "executor-thread",
+    "task-arena-size-4096",
+] }
+
+embassy-time = { version = "0.4", features = [
+    "tick-hz-32_768",
+] }
+
+embassy-sync = { version = "0.7" }
+
+embassy-stm32 = { version = "0.2", features = [
+    "unstable-pac",
+    "memory-x",
+    "exti",
+    "time-driver-any",
+    "stm32g473ce",
+] }
 
 [profile.release]
 opt-level = 1 # This is like C++ -O1 optimisation flag 
