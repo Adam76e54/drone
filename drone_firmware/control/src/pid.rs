@@ -1,14 +1,24 @@
 use crate::filtering::lowpass_alpha;
 
-#[derive(Clone, Copy)]
+/**
+ * Things to add: 
+ * 1. FF based on setpoint derivative (with filtering and averaging)
+ * 2. D-term on measurement derivative instead of error derivative
+ * 3. Dynamic kd (small for regular flying, high for fast flying in dirty air)
+ * 4. I-term relaxing, rotating, and windup handling (supressing when the setpoint change is rapid, stuff like that)
+ * 5. Antigravity (increase I-term when throttling is high) to avoid noise dipping
+ * 6. Throttle PID Attenuation (TPA)
+ * 7. Rate curves (RC, expo, super rate)
+ */
 
+#[derive(Clone, Copy)]
 pub struct PIDF {
     pub kp: f32,
     pub ki: f32,
     pub kd: f32,
     pub kff: f32, // Feed-forward gain
 }
-
+#[derive(Clone, Copy)]
 pub struct Controller {
     coefficients: PIDF,
     integral_limit: f32,
