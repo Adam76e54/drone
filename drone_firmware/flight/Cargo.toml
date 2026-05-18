@@ -4,4 +4,18 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-control = { path = "../control"}
+cortex-m        = { workspace = true }
+cortex-m-rt     = { workspace = true }
+
+embassy-executor = { workspace = true }
+embassy-time     = { workspace = true }
+embassy-sync     = { workspace = true }
+embassy-stm32    = { workspace = true }
+libm = { workspace = true }
+
+panic-halt = { workspace = true }
+
+# to be added:
+# control = { path = "../control"}
+# maths   = { path = "../maths" }
+# control = { path = "../control" }
