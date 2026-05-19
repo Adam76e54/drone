@@ -1,10 +1,10 @@
 $ErrorActionPreference = "Stop"
 
-cargo build -p flight --release
+cargo build --release
 
 $projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$buildElf    = Join-Path $projectRoot "target\thumbv7em-none-eabihf\release\flight"
-$flashElf    = Join-Path $projectRoot "target\thumbv7em-none-eabihf\release\flight.elf"
+$buildElf    = Join-Path $projectRoot "target\thumbv7em-none-eabihf\release\drone_firmware"
+$flashElf    = Join-Path $projectRoot "target\thumbv7em-none-eabihf\release\drone_firmware.elf"
 $cubeProg    = "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe"
 
 if (-not (Test-Path $buildElf)) {
