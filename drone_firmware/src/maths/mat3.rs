@@ -1,6 +1,6 @@
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
-use crate::vec3::Vec3;
-use crate::quat::Quat;
+use crate::maths::vec3::Vec3;
+use crate::maths::quat::Quat;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Mat3 {

@@ -7,23 +7,25 @@
 # be specified further with fields {which go in an inline table if there are multiple for one key}
 # Tables can have nested tables eg. [dependencies.embassy-time] is a table nested in [dependencies] 
 
-[workspace]
-members = [
-    "flight", 
-    "maths", 
-    "control",
-    "hardware"]
+[package]
+name = "drone_firmware"
+version = "0.1.0"
+edition = "2024"
 
-resolver = "2"
+[lib]
+test = false
+doctest = false
 
-[workspace.dependencies]
+[dependencies]
 libm = "0.2"
 
 panic-halt = "0.2"
 
+# Cortex-M runtime and utilities
 cortex-m = { version = "0.7", features = ["inline-asm", "critical-section-single-core"] }
 cortex-m-rt = "0.7"
 
+# Embassy core 
 embassy-executor = { version = "0.7", features = [
     "arch-cortex-m",
     "executor-thread",
@@ -44,19 +46,27 @@ embassy-stm32 = { version = "0.2", features = [
     "stm32g473ce",
 ] }
 
+# Embedded HAL traits
+embedded-hal = "1.0.0"
+embedded-hal-async = "1.0.0"
+embedded-hal-bus = { version = "0.2", features = ["async"] }
+embedded-io-async = "0.6.1"
+
+# Useful utilities
+heapless = { version = "0.8", default-features = false }  # No-alloc data structures (Vec, String, etc.)
+static_cell = "2"          # Static mutable cells for async Embassy tasks
+micromath = "2.0.0"        # Fast approximate math for embedded (sin, cos, sqrt, atan2)
+nb = "1.1.0"               # Non-blocking result type
+
 [profile.release]
+opt-level = 2 # This is like C++ -O1 optimisation flag 
+lto = "fat" # link-time optimisation, allows optimisation across crates rather than "optimise everything separately, then link"
+codegen-units = 1 # don't let the compiler split crates into chunks, force it to optimise everything together
+panic = "abort" # runtime errors just stop the programme instead of unwinding the stack 
+incremental = false # don't store metadata in the .elf (slows compile time but smaller binary)
+
+[profile.dev]
 opt-level = 1 # This is like C++ -O1 optimisation flag 
 lto = "thin" # link-time optimisation, allows optimisation across crates rather than "optimise everything separately, then link"
 codegen-units = 1 # don't let the compiler split crates into chunks, force it to optimise everything together
 panic = "abort" # runtime errors just stop the programme instead of unwinding the stack 
-
-
-# Override for a specific crate
-[profile.release.package.maths]
-opt-level = 3
-
-[profile.release.package.control]
-opt-level = 2
-
-[profile.release.package.flight]
-opt-level = "z"

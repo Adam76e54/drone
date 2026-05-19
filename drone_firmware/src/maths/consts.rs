@@ -7,4 +7,3 @@ pub const QUARTER_TAU: f32 = core::f32::consts::FRAC_PI_2;
 
 pub const DEG_TO_RAD: f32 = TAU / 360.0;
 pub const RAD_TO_DEG: f32 = 360.0 / TAU;
-

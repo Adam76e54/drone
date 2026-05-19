@@ -1,4 +1,4 @@
-use maths::consts::TAU;
+use crate::maths::consts::TAU;
 
 // Returns alpha that solves RCy' = x - y when solving via Euler Method 
 // (eg. y = voltage out, x = voltage in, for an RC circuit)

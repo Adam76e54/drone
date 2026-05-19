@@ -1,7 +1,7 @@
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use core::convert::From;
 
-use crate::quat::Quat;
+use crate::maths::quat::Quat;
 
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
 
@@ -153,6 +153,5 @@ impl From<Vec3> for [f32; 3] {
         [vec.x, vec.y, vec.z]
     }
 }
-
 
 

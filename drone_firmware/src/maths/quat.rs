@@ -1,7 +1,7 @@
 use core::ops::{Add, Div, Mul, Sub};
 
-use crate::vec3::Vec3;
-use crate::mat3::Mat3;
+use crate::maths::vec3::Vec3;
+use crate::maths::mat3::Mat3;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Quat {
