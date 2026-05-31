@@ -5,3 +5,5 @@ copies/
 ardupilot/
 
 .vscode/
+
+.github/
