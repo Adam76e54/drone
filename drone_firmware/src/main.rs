@@ -1,6 +1,8 @@
 #![no_std]
 #![no_main]
 
+use drone_firmware::drivers::dshot;
+
 use embassy_executor::Spawner;
 use embassy_stm32::gpio::{Level, Output, Speed};
 use embassy_time::Timer;
