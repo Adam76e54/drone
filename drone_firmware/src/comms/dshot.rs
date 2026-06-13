@@ -14,22 +14,6 @@ pub enum PayloadKind {
     Command,
 }
 
-/// Our FC only supports Dshot300 and 600 
-#[derive(Debug, Clone, Copy)]
-pub enum DshotRate {
-    Dshot300,
-    Dshot600,
-}
-
-impl DshotRate {
-    pub const fn bit_rate_s(self) -> u32 {
-        match self {
-            DshotRate::Dshot300 => 300_000,
-            DshotRate::Dshot600 => 600_000,
-        }
-    }
-}
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Frame {
     raw: u16, 
@@ -97,18 +81,24 @@ impl Frame {
         }
     }
 
+    /// Fills buffer with appropriate ccr (clock's capture/compare register) values based on the dshot protocol
+    /// to give the clock for dma (direct memory access).
+    ///  
     /// Buffer is sized 17 to drive the line low on the last entry 
-    pub fn waveform(&self, buf: &mut [u16; 17], frequency: DshotRate) {
-        let symbol_time_ns = 1_000_000_000 / frequency.bit_rate_s();
+    pub fn waveform(&self, buf: &mut [u16; 17], max_ccr: u32) {
+        
         let mut bits = self.raw;
+
+        let zero = (max_ccr * 375 / 1000) as u16;
+        let one = (max_ccr * 750 / 1000) as u16;
 
         for value in buf[..16].iter_mut() {
             let single_bit = bits & 0x8000; // 0b1000_0000_0000_0000
 
             if single_bit == 0 {
-                *value = (symbol_time_ns * 375 / 1000) as u16;
+                *value = zero;
             } else {
-                *value = (symbol_time_ns * 750 / 1000) as u16;
+                *value = one;
             }
             bits <<= 1;
         }
