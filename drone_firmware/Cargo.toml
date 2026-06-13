@@ -12,9 +12,11 @@ name = "drone_firmware"
 version = "0.1.0"
 edition = "2024"
 
-[lib]
+[[bin]]
+name = "drone_firmware"
 test = false
-doctest = false
+bench = false
+path = "src/main.rs"
 
 [dependencies]
 libm = "0.2"
@@ -51,6 +53,9 @@ embedded-hal = "1.0.0"
 embedded-hal-async = "1.0.0"
 embedded-hal-bus = { version = "0.2", features = ["async"] }
 embedded-io-async = "0.6.1"
+
+#don't need this but did play with it. embassy re-exports this anyway
+#stm32g4 = { version = "0.16.0", default-features = false, features = ["stm32g473"] }
 
 # Useful utilities
 heapless = { version = "0.8", default-features = false }  # No-alloc data structures (Vec, String, etc.)
