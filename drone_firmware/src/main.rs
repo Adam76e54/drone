@@ -120,8 +120,9 @@ fn main() -> ! {
     });
 
 
-    // NOTE we're going to use TIM20 CH1
 
+
+    // TIMER SETUP we're going to use TIM20 CH1
     // Turn off timer before reconfiguring
     tim20.cr1().modify(|w| {
         w.set_cen(false);
@@ -176,9 +177,38 @@ fn main() -> ! {
     tim20.ccer().modify(|w| {
         w.set_cce(0, true);
     });
+    
+    // Advanced timers have a break and deadtime register for safety and bridge-driving stuff
+    tim20.bdtr().modify(|w| {
+        // Master output enable turned on
+        w.set_moe(true);
+    });
+
+    // Event generation register. 
+    // NOTE: this is conceptually a write-only register - you flip a bit, the event triggers, there's no state saved. 
+    // The api thus only provide write() and not modify()
+    tim20.egr().write(|w| {
+        // Update generator 
+        // This does a few "update" things to do with the timer like loading shadow registers and setting the counter, stuff like that
+        w.set_ug(false);
+    });
+
+
+
+
+    // DMA SETUP
+    let dmamux = pac::DMAMUX1;
+    let ch1 = pac::DMA1.ch(0);
+
+    let ccr = ch1.cr();
+
+    ccr.modify(|w | {
+        w.set_en(false);
+    });
+    while ccr.read().en() {}
+
 
     
-
     loop {
         cortex_m::asm::nop();
     }
